@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ditch import untitled
+from os.path import expanduser
 
 
 class MainWindow(QtWidgets.QTabWidget):
@@ -40,6 +41,7 @@ class FirstTabContentVidget(TabContent):
         self.setFileButton.setGeometry(QtCore.QRect(305, 60, 75, 23))
         self.setFileButton.setObjectName("setFileButton")
         self.setFileButton.setText("Задати шлях")
+        self.setFileButton.clicked.connect(self.setFileButtonClicked)
 
         self.setInputsLabel.setGeometry(QtCore.QRect(20, 120, 131, 16))
         self.setInputsLabel.setObjectName("setInputsLabel")
@@ -51,19 +53,32 @@ class FirstTabContentVidget(TabContent):
         self.okButton.setGeometry(QtCore.QRect(305, 310, 75, 23))
         self.okButton.setObjectName("okButton")
         self.okButton.setText("Готово")
-
+        # якшо кнопка нажата, визиваєся okButtonClicked
         self.okButton.clicked.connect(self.okButtonClicked)
 
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    def setFileButtonClicked(self):
+        # ініціалізація діалогового вікна вибора каталогу
+        dialog = QtWidgets.QFileDialog(self)
+        # режим діалогового вікна, при якому виводиться вся доступна інфа по файлам
+        dialog.setViewMode(QtWidgets.QFileDialog.List)
+        # режим діалогового вікна, при якому можна вибрати файл з будь яким розширенням
+        dialog.setFileMode(QtWidgets.QFileDialog.ExistingFile)
+        # якшо кнопка ОК діалогового вікна, була натиснута, записуем путь в файл
+        if dialog.exec_():
+            filePath = dialog.selectedFiles()
+            # print(filePath)
+
     def okButtonClicked(self):
         inputs = self.inputsTextField.toPlainText()
-        print(inputs)
+        # print(inputs)
         self.saveDataToFile(inputs)
 
     def saveDataToFile(self, data):
         with open("input.txt", 'w') as new_file:
             new_file.write(data)
+
 
 # фронт другого пункта завдання
 class SecondTabContentVidget(TabContent):
