@@ -7,7 +7,7 @@ if __name__ == '__main__':
     application = MainWindow()
 
     application.addTab(FirstTabContentVidget(), "Створення імітаційної моделі")
-    application.addTab(SecondTabContentVidget(), "пуста хуета")
+    application.addTab(SecondTabContentVidget(), "test tab")
 
     application.show()
 
